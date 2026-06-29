@@ -72,6 +72,10 @@ export function CaseProvider({ children }: { children: React.ReactNode }) {
   }, [state.cases, setSavedCases]);
 
   const createCase = (caseData: Partial<MedicalCase>): MedicalCase => {
+    // Get the max PT id
+    const existingPTIds = state.cases.map(c => parseInt(c.patientDetails.patientId.split('-')[2] || '0', 10));
+    const nextPTNumber = Math.max(0, ...existingPTIds) + 1;
+
     const newCase: MedicalCase = {
       id: `case-${generateId()}`,
       title: caseData.title || 'Untitled Case',
@@ -83,7 +87,7 @@ export function CaseProvider({ children }: { children: React.ReactNode }) {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       patientDetails: caseData.patientDetails || {
-        patientId: `PT-${new Date().getFullYear()}-${String(state.cases.length + 1).padStart(3, '0')}`,
+        patientId: `PT-${new Date().getFullYear()}-${String(nextPTNumber).padStart(3, '0')}`,
         age: 0,
         gender: 'Male',
         occupation: '',

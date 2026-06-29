@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCases } from '@/hooks/useCases';
 import { useFormStep } from '@/hooks/useFormStep';
@@ -9,6 +9,7 @@ import { Step1_PatientDetails } from '@/components/case-form/Step1_PatientDetail
 import { Step2_ChiefComplaint } from '@/components/case-form/Step2_ChiefComplaint';
 import { Step3_MedicalHistory } from '@/components/case-form/Step3_MedicalHistory';
 import { Step4_ExaminationFindings } from '@/components/case-form/Step4_ExaminationFindings';
+import { Step5_Investigations } from '@/components/case-form/Step5_Investigations';
 import { Step6_DiagnosisAndPlan } from '@/components/case-form/Step6_DiagnosisAndPlan';
 import { FormNavigation } from '@/components/case-form/FormNavigation';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -20,28 +21,35 @@ export default function NewCasePage() {
   const searchParams = useSearchParams();
   const templateId = searchParams.get('template');
   const { state, dispatch, createCase } = useCases();
-  const { currentStep, nextStep, prevStep, totalSteps, progress } = useFormStep(5);
+  const { currentStep, nextStep, prevStep, totalSteps, progress } = useFormStep(6);
 
   const [caseData, setCaseData] = useState<MedicalCase | null>(null);
+  const initializedRef = useRef(false);
 
   useEffect(() => {
+    if (initializedRef.current) return;
+
     if (templateId) {
       const template = state.cases.find(c => c.id === templateId);
       if (template) {
-        setCaseData({
+        const newCase: MedicalCase = {
           ...template,
           id: generateId(),
           title: `${template.title} (Copy)`,
           status: 'Draft',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-        });
+        };
+        setCaseData(newCase);
+        dispatch({ type: 'ADD_CASE', payload: newCase });
+        initializedRef.current = true;
       }
     } else {
       const newCase = createCase({});
       setCaseData(newCase);
+      initializedRef.current = true;
     }
-  }, [templateId, state.cases]);
+  }, [templateId]);
 
   const handleUpdate = (updates: Partial<MedicalCase>) => {
     if (!caseData) return;
@@ -91,6 +99,8 @@ export default function NewCasePage() {
       case 4:
         return <Step4_ExaminationFindings caseData={caseData} onChange={handleUpdate} />;
       case 5:
+        return <Step5_Investigations caseData={caseData} onChange={handleUpdate} />;
+      case 6:
         return <Step6_DiagnosisAndPlan caseData={caseData} onChange={handleUpdate} />;
       default:
         return null;
