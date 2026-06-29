@@ -16,7 +16,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { MedicalCase } from '@/types';
 import { generateId } from '@/lib/utils';
 
-export default function NewCasePage() {
+function NewCasePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const templateId = searchParams.get('template');
@@ -137,6 +137,7 @@ export default function NewCasePage() {
     </div>
   );
 }
+
 export default function NewCasePageWrapper() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
