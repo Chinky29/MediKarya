@@ -137,3 +137,10 @@ export default function NewCasePage() {
     </div>
   );
 }
+export default function NewCasePageWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <NewCasePage />
+    </Suspense>
+  );
+}
