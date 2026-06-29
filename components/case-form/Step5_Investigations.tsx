@@ -33,7 +33,7 @@ export function Step5_Investigations({ caseData, onChange }: Step5Props) {
         name: newInvestigation.name,
         result: newInvestigation.result,
         normalRange: newInvestigation.normalRange || '',
-        date: newInvestigation.date,
+        date: newInvestigation.date || '',
         interpretation: newInvestigation.interpretation,
       };
       onChange({ investigations: [...caseData.investigations, inv] });
