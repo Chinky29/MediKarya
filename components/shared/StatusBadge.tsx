@@ -8,7 +8,7 @@ interface StatusBadgeProps {
 export function StatusBadge({ status }: StatusBadgeProps) {
   const variantMap: Record<MedicalCase['status'], 'default' | 'secondary' | 'warning' | 'success'> = {
     Draft: 'secondary',
-    'In Progress': 'info',
+    'In Progress': 'default',
     Review: 'warning',
     Published: 'success',
   };
