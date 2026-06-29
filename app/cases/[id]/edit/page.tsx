@@ -51,7 +51,7 @@ export default function EditCasePage() {
 
   const handleSubmit = () => {
     if (!caseData) return;
-    const updated = { ...caseData, status: 'In Progress', updatedAt: new Date().toISOString() };
+    const updated = { ...caseData, status: 'In Progress' as const, updatedAt: new Date().toISOString() }
     setCaseData(updated);
     dispatch({ type: 'UPDATE_CASE', payload: updated });
     router.push(`/cases/${caseData.id}`);
