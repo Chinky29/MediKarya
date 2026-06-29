@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  output: 'standalone',  // keep existing config
+  experimental: {
+    missingSuspenseWithCSRBailout: false,  // ← add this line
+  },
 }
 
 module.exports = nextConfig
