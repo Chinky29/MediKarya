@@ -80,7 +80,7 @@ export function CaseProvider({ children }: { children: React.ReactNode }) {
       id: `case-${generateId()}`,
       title: caseData.title || 'Untitled Case',
       specialty: caseData.specialty || 'Cardiology',
-      status: caseData.status || 'Draft',
+      status: (caseData.status || 'Draft') as 'Draft' | 'In Progress' | 'Review' | 'Published',
       tags: caseData.tags || [],
       difficulty: caseData.difficulty || 'Beginner',
       authorId: DEFAULT_AUTHOR.id,
@@ -145,11 +145,11 @@ export function CaseProvider({ children }: { children: React.ReactNode }) {
   const duplicateCase = (caseId: string) => {
     const originalCase = state.cases.find(c => c.id === caseId);
     if (originalCase) {
-      const duplicated = {
+      const duplicated: MedicalCase = {
         ...originalCase,
         id: `case-${generateId()}`,
         title: `${originalCase.title} (Copy)`,
-        status: 'Draft',
+        status: 'Draft' as const,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };

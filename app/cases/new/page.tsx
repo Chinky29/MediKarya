@@ -36,7 +36,7 @@ export default function NewCasePage() {
           ...template,
           id: generateId(),
           title: `${template.title} (Copy)`,
-          status: 'Draft',
+          status: 'Draft' as const,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         };
@@ -53,7 +53,7 @@ export default function NewCasePage() {
 
   const handleUpdate = (updates: Partial<MedicalCase>) => {
     if (!caseData) return;
-    const updated = { ...caseData, ...updates, updatedAt: new Date().toISOString() };
+    const updated: MedicalCase = { ...caseData, ...updates, updatedAt: new Date().toISOString() };
     setCaseData(updated);
     if (templateId) {
       dispatch({ type: 'ADD_CASE', payload: updated });
@@ -64,7 +64,7 @@ export default function NewCasePage() {
 
   const handleSave = () => {
     if (!caseData) return;
-    const updated = { ...caseData, status: 'Draft', updatedAt: new Date().toISOString() };
+    const updated: MedicalCase = { ...caseData, status: 'Draft' as const, updatedAt: new Date().toISOString() };
     setCaseData(updated);
     if (templateId) {
       dispatch({ type: 'ADD_CASE', payload: updated });
@@ -76,7 +76,7 @@ export default function NewCasePage() {
 
   const handleSubmit = () => {
     if (!caseData) return;
-    const updated = { ...caseData, status: 'In Progress', updatedAt: new Date().toISOString() };
+    const updated: MedicalCase = { ...caseData, status: 'In Progress' as const, updatedAt: new Date().toISOString() };
     setCaseData(updated);
     if (templateId) {
       dispatch({ type: 'ADD_CASE', payload: updated });
